@@ -1,3 +1,17 @@
+\\ Génération d'une suite super croissante :
+\\ len est la taille de la suite qu'on souhaite
+geneCroissante(len) = {
+    my(a, somme);
+    a = vector(len);
+    somme = 0;
+    for(i = 1, len,
+        a[i] = random() + somme;
+        somme += a[i];
+    );
+    return(a);
+}
+
+
 \\ Calcul de la clef privée
 
 \\ a est une suite super croissante
@@ -75,18 +89,24 @@ dechiffrement(c, privee) = {
 
 
 main() = {
-    my(a = [1,3,7,19,41,72,183,333]);
-    my(N = 732);
-    my(A = 587);
+    \\ test chiffrement/ dechiffrement
+    my(privee, b, w, c, m);
+    privee = [[1,3,7,19,41,72,183,333], 732, 587];
+    b = clefPublique(privee);
+    w = [0,1,0,0,1,1,0,0];
+    c = chiffrement(w, b);
 
-    my(privee = [a, N, A]);
-    my(b = clefPublique(privee));
-    my(w = [0,1,0,0,1,1,0,0]);
-    my(c = chiffrement(w, b));
+    m = dechiffrement(c, privee);
 
-    my(m = dechiffrement(c, privee));
     print(w);
     print(m);
+
+
+    \\ test génaration de clef privée
+    my(a, priveeTest);
+    a = geneCroissante(5);
+    priveeTest = clefPrivee(a);
+    print(priveeTest);
 
 }
 
