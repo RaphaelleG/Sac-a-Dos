@@ -56,14 +56,16 @@ LLL(b) = {
     b_ortho = vector(n); \\ la base orthonormée
     b_ortho[1] = b[1];
 
-    mu = vector(n);
-    for(i = 1, n,
-        mu[i] = vector(n);
-    );
 
     \\ tableau simple
     B = vector(n);
     B[1] = scal(b_ortho[1], b_ortho[1]);
+
+    \\ tableau de tableau
+    mu = vector(n);
+    for(i = 1, n,
+        mu[i] = vector(n);
+    );
 
 
     for(i = 2, n,
@@ -73,7 +75,6 @@ LLL(b) = {
             b_ortho[i] -=mu[i][j]*b_ortho[j];
         );
         B[i]= scal(b_ortho[i], b_ortho[i]);
-        print(B[i]);
     );
 
 
@@ -82,15 +83,11 @@ LLL(b) = {
 
     my(mu_tmp, B_tmp, b_tmp, mu_k_tmp, t);
 
-    print(n);
     while(k<=n,
-        print();
-        print(k);
-        print(B);
+
         [b, mu] = RED(k, k-1, b, mu);
 
-        if( (B[k]) < ((3/4)-(mu[k][k-1] ^ 2)*B[k-1] ),
-            print("if");
+        if( (B[k]) <  ((3/4)-(mu[k][k-1] ^ 2)) *B[k-1] ,
             mu_tmp = mu[k][k-1];
             B_tmp = B[k] + mu_tmp^2 * B[k-1];
             mu[k][k-1] = mu_tmp*B[k-1]/B_tmp;
@@ -113,15 +110,14 @@ LLL(b) = {
             for(i = k+1, n,
                 t = mu[i][k];
                 mu[i][k] = mu[i][k-1] - mu_tmp*t;
-                mu[i][k-1] = t + mu[k][k]*mu[i][k];
+                mu[i][k-1] = t + mu[k][k-1]*mu[i][k];
             );
             k = max(2, k-1),
 
 
             \\ else
-            print("else");
             forstep(l=k-2, 1, -1,
-                RED(k,l, b, mu);
+                [b, mu] = RED(k,l, b, mu);
             );
             k = k+1;
         );
@@ -134,8 +130,8 @@ LLL(b) = {
 main() = {
     my(b, c, i);
 
-    b = [587,297,449,173,643,540, 549, 27];
-    c = 16;
+    b = [232, 104, 147, 105, 70];
+    c = 232 + 147;
 
     b = base(b, c);
     for(i= 1, #b,
