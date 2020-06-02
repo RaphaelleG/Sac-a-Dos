@@ -1,7 +1,7 @@
 
 \\ La valeur maximale des éléments de la liste.
 
-max_valeur = 500 ;
+max_valeur = 10000 ;
 
 
 
@@ -220,9 +220,11 @@ Brute_Force(taille) = {
 
 main() = {
 
-  for(i = 1, 10000,
-    Brute_Force(10);
+  for(i = 1, 100,
+
+    Brute_Force(25);
   )
 }
-
+#
 print(main());
+#
