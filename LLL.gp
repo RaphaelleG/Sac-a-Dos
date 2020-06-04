@@ -127,22 +127,50 @@ LLL(b) = {
 
 }
 
-main() = {
-    my(b, c, i);
 
-    b = [232, 104, 147, 105, 70];
-    c = 232 + 147;
+\\ Fonction de test de l'Algorithme LLL
+test() = {
+    my(n, A, M, w, A1, Mess, s, b, res);
 
-    b = base(b, c);
-    for(i= 1, #b,
-        print(b[i]);
-    );
-    print();
-    print();
+    \\ taille du crytposysteme
+    n = 100;
+    A = vector(n,i,random([2^n*(2^(i-1)-1)+1,2^n*(2^(i-1))]));
+    M = random([2^(2*n+1)+1,2^(2*n+2)-1]);
+    until(gcd(w,M)==1, w=random([2,M-2]));
+
+    \\ A1 la clef publique
+    A1 = lift(Mod(A/w,M));
+
+    \\ Mess le message
+    until(Mess != vector(n,i,0), Mess = vector(n,i,random([0,1])));
+
+    \\ s le message crypté, donc juste un entier
+    s = (A1*mattranspose(Mess));
+
+    \\ on transforme le problème en base de reseau
+    b = base(A1, s);
     b = LLL(b);
-    for(i= 1, #b,
-        print(b[i]);
+
+    for(i=1, n+1,
+        res = 0;
+        for(j = 1, n,
+            res +=b[i][j]*A1[j];
+        );
+        if(res == s, return(1));
     );
+    return(0);
+
+}
+
+main() = {
+    my(n, res, i);
+    \\ nombre de test qu'on fait
+    n = 5;
+    res = 0;
+    for(i = 1, n,
+        res += test();
+    );
+    print(res, "/", n);
 }
 
 main();
