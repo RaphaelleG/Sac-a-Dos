@@ -18,7 +18,7 @@ test() = {
     my(n, A, M, w, A1, Mess, s, b, res, T);
 
     \\ taille du crytposysteme
-    n = 150;
+    n = 50;
     A = vector(n,i,random([2^n*(2^(i-1)-1)+1,2^n*(2^(i-1))]));
     M = random([2^(2*n+1)+1,2^(2*n+2)-1]);
     until(gcd(w,M)==1, w=random([2,M-2]));
@@ -51,7 +51,7 @@ test() = {
 main() = {
     my(n, res, i);
     \\ nombre de test qu'on fait
-    n = 1;
+    n = 500;
     res = 0;
     for(i = 1, n,
         res += test();
